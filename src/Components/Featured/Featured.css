@@ -1,0 +1,7 @@
+.featured_item{
+    background-image: url('../../assets/home/featured.jpg');
+    background-position: center;
+    background-repeat: repeat;
+    background-color: rgba(0, 0, 0, 0.295);
+    background-blend-mode: multiply;
+}
