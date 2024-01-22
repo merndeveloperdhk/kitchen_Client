@@ -6,25 +6,25 @@ import saladImage from '../../assets/menu/salad-bg.jpg';
 import soupImage from '../../assets/menu/soup-bg.jpg';
 import pizzaImage from '../../assets/menu/pizza-bg.jpg'
 import drinksImage from '../../assets/menu/dessert-bg.jpeg'
-import UseMenu from "../UseMenu/UseMenu";
+import UseMenu from "../hooks/UseMenu";
 import SectionTitle from "../SectionTitle/SectionTitle";
 import MenuCategory from "../../MenuCategory/MenuCategory";
 
 
 const Menu = () => {
     const[menus] = UseMenu();
+    const offered = menus.filter(item => item.category === 'offered');
     const desert = menus.filter(item => item.category === 'dessert');
     const salad = menus.filter(item => item.category === 'salad');
     const soup = menus.filter(item => item.category === 'soup');
     const pizza = menus.filter(item => item.category === 'pizza');
-    const offered = menus.filter(item => item.category === 'offered');
     const drinks = menus.filter(item => item.category === 'drinks');
     return (
         <div>
             <Helmet>
                 <title>MIsam's Kitchen | Menu</title>
             </Helmet>
-            <Cover image={menuImage} coverTitle={"Menu"}></Cover>
+            <Cover image={menuImage} coverTitle={"Menu"} ></Cover>
             {/* offered */}
            <div className="mt-16 mb-6">
            <SectionTitle  subHeading={"Don't miss"} heading={"Today's Offer"}></SectionTitle>

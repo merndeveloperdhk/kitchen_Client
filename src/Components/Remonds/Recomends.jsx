@@ -21,8 +21,8 @@ const Recomends = () => {
             ></SectionTitle>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             {
-                cards.slice(2,6).map(card => <SingleCard
-                key={card._id}
+                cards.slice(2,6).map((card, idx) => <SingleCard
+                key={idx}
                 card={card}
                 ></SingleCard>)
             }

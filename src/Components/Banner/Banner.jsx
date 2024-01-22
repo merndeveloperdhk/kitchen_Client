@@ -10,7 +10,7 @@ import img6 from '../../assets/banner/06.png'
 
 const Banner = () => {
     return (
-        <Carousel className="text-center mb-44 md:mb-0">
+        <Carousel className="text-center mb-44 md:mb-0 ">
                 <div>
                     <img src={img1} />
                     <p className="legend">Super Delicious Menu</p>

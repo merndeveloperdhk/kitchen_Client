@@ -3,14 +3,16 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import './Testimonial.css'
 import { BiSolidQuoteSingleLeft } from "react-icons/bi";
+import 'swiper/css';
+import 'swiper/css/navigation';
+import '@smastrom/react-rating/style.css'
+
 
 // Import Swiper styles
 import "swiper/css";
 import { useState } from "react";
 import { useEffect } from "react";
 import { Rating } from "@smastrom/react-rating";
-import '@smastrom/react-rating/style.css'
-
 const Testimonial = () => {
   const [reviews, setReviews] = useState([]);
   useEffect(() => {
@@ -21,7 +23,7 @@ const Testimonial = () => {
       });
   }, []);
   return (
-    <div className="my-16">
+    <div className="my-12">
       <SectionTitle
         subHeading={"What's Our Client say"}
         heading={"Testimonials"}
@@ -30,7 +32,7 @@ const Testimonial = () => {
       <Swiper navigation={true} modules={[Navigation]} className="mySwiper">
         {reviews.map((review) => (
           <SwiperSlide key={review._id}>
-            <div className="flex flex-col items-center gap-y-4">
+            <div className="flex flex-col items-center gap-y-4 px-16 -mt-10">
                 <div className="flex text-3xl">
                 <BiSolidQuoteSingleLeft></BiSolidQuoteSingleLeft>
                 <BiSolidQuoteSingleLeft></BiSolidQuoteSingleLeft>

@@ -1,7 +1,7 @@
 import { Helmet } from "react-helmet-async";
 import Cover from "../../Components/Shared/Cover/Cover";
 import orderImage from "../../assets/reservation/category-pizza.jpg";
-import UseMenu from "../../Components/UseMenu/UseMenu";
+import UseMenu from "../../Components/hooks/UseMenu";
 
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';

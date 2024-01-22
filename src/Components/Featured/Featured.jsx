@@ -1,6 +1,7 @@
 import SectionTitle from "../SectionTitle/SectionTitle";
 import featuredImage from '../../assets/home/featured.jpg'
 import './Featured.css'
+import { Link } from "react-router-dom";
 
 const Featured = () => {
     return (
@@ -17,7 +18,7 @@ const Featured = () => {
                     <p>Aug 20, 2025</p>
                     <p className="uppercase">Where can i get some?</p>
                     <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cumque culpa nostrum aperiam tempore nulla odio iste dicta suscipit deserunt atque optio in, dolorem ipsa quae dolores, quam nobis illo delectus perspiciatis nam? Numquam id neque amet quo repellat, impedit recusandae!</p>
-                    <button className="btn btn-outline text-white">Order Now</button>
+                    <Link to='/order'><button className="btn btn-outline text-white">Order Now</button></Link>
                 </div>
             </div>
         </div>
