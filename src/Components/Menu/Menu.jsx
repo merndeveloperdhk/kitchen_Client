@@ -4,6 +4,7 @@ import menuImage from '../../assets/menu/banner3.jpg';
 import desertImage from '../../assets/menu/dessert-bg.jpeg';
 import saladImage from '../../assets/menu/salad-bg.jpg';
 import soupImage from '../../assets/menu/soup-bg.jpg';
+import offeredImage from '../../assets/menu/pizza-bg.jpg';
 import pizzaImage from '../../assets/menu/pizza-bg.jpg'
 import drinksImage from '../../assets/menu/dessert-bg.jpeg'
 import UseMenu from "../hooks/UseMenu";
@@ -24,36 +25,36 @@ const Menu = () => {
             <Helmet>
                 <title>MIsam's Kitchen | Menu</title>
             </Helmet>
-            <Cover image={menuImage} coverTitle={"Menu"} ></Cover>
+            <Cover image={menuImage} coverTitle={"menu"} ></Cover>
             {/* offered */}
            <div className="mt-16 mb-6">
            <SectionTitle  subHeading={"Don't miss"} heading={"Today's Offer"}></SectionTitle>
-            <MenuCategory items={ offered}></MenuCategory>
+            <MenuCategory items={ offered}  coverTitle={"offered"} image={offeredImage} ></MenuCategory>
            </div>
            {/* desert */}
            <div className="mb-8">
-           <Cover image={desertImage} coverTitle={"Dessert"}></Cover>
-            <MenuCategory  items={desert} ></MenuCategory>
+           {/* <Cover image={desertImage} coverTitle={"dessert"}></Cover> */}
+            <MenuCategory image={desertImage}  items={desert} coverTitle={"dessert"} ></MenuCategory>
            </div>
            {/* Salad */}
            <div className="mb-8">
-                <Cover image={saladImage} coverTitle={"Salad"}></Cover>
-                <MenuCategory items={salad}></MenuCategory>
+                {/* <Cover image={saladImage} coverTitle={"salad"}></Cover> */}
+                <MenuCategory items={salad} image={saladImage} coverTitle={"salad"}></MenuCategory>
            </div>
            {/* Soup */}
            <div className="mb-8">
-                <Cover image={soupImage} coverTitle={"Soup"}></Cover>
-                <MenuCategory items={soup}></MenuCategory>
+                {/* <Cover image={soupImage} coverTitle={"soup"}></Cover> */}
+                <MenuCategory items={soup} image={soupImage} coverTitle={"soup"}></MenuCategory>
            </div>
            {/* Pizza */}
            <div className="mb-8">
-                <Cover image={pizzaImage} coverTitle={"Pizza"}></Cover>
-                <MenuCategory items={pizza}></MenuCategory>
+                {/* <Cover image={pizzaImage} coverTitle={"pizza"}></Cover> */}
+                <MenuCategory items={pizza} image={pizzaImage} coverTitle={"pizza"}></MenuCategory>
            </div>
            {/* drinks */}
            <div className="mb-8">
-                <Cover image={drinksImage} coverTitle={"Drinks"}></Cover>
-                <MenuCategory items={drinks}></MenuCategory>
+                {/* <Cover image={drinksImage} coverTitle={"drinks"}></Cover> */}
+                <MenuCategory items={drinks} image={drinksImage} coverTitle={"drinks"}></MenuCategory>
            </div>
            
         </div>
