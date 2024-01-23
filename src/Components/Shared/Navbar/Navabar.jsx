@@ -1,8 +1,12 @@
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
+import { IoCartOutline } from "react-icons/io5";
+import useCart from "../../hooks/useCart";
 
 const Navabar = () => {
   const { user, logOut } = useAuth();
+  const [cart] = useCart();
+
   const handleLogOut = () => {
     logOut();
   };
@@ -18,7 +22,11 @@ const Navabar = () => {
         <NavLink to="/order/pizza">Order</NavLink>
       </li>
       {user ? (
-        <div className="md:flex items-center gap-2">
+        <div className="md:flex items-center gap-2 ml-2">
+          <Link to='/dashboard/dCart' className="btn btn-sm bg-[#8e5037] hover:bg-[#6c1b22] text-white border-none">
+            <IoCartOutline className="text-2xl"></IoCartOutline>
+            <div className="badge badge-secondary">+{cart.length}</div>
+          </Link>
           <button onClick={handleLogOut}>Logout</button>
           <div className="md:flex items-center gap-2">
             <img className="w-8" src={user.photoURL} alt="" />
@@ -42,7 +50,7 @@ const Navabar = () => {
   );
   return (
     <div>
-      <div className="navbar fixed z-10 bg-opacity-25 bg-base-100 max-w-7xl">
+      <div className="navbar fixed z-10 bg-opacity-25 bg-base-100 max-w-7xl ">
         <div className="navbar-start">
           <div className="dropdown">
             <label tabIndex={0} className="btn btn-ghost lg:hidden">
@@ -68,13 +76,18 @@ const Navabar = () => {
               {navBar}
             </ul>
           </div>
-          <a className="btn btn-ghost normal-case text-xl">Misam's Kitchen</a>
+          <Link className="btn btn-ghost normal-case text-xl">
+            Misam's Kitchen
+          </Link>
         </div>
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">{navBar}</ul>
         </div>
         <div className="navbar-end">
-          <a className="btn">Button</a>
+          <Link className="btn bg-[#8e5037] hover:bg-[#6c1b22] text-white border-none">
+            Start
+            
+          </Link>
         </div>
       </div>
     </div>
