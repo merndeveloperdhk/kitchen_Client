@@ -9,7 +9,8 @@ const MainLayOut = () => {
     location.pathname.includes("register");
   return (
     <div>
-      {noHeaderFooter || <Navabar></Navabar>}
+      {/* {noHeaderFooter || <Navabar></Navabar>} */}
+       <Navabar></Navabar>
       <div className="min-h-[64vh]">
         <Outlet></Outlet>
       </div>

@@ -1,13 +1,19 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import {  useEffect,  useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { loadCaptchaEnginge, LoadCanvasTemplate,validateCaptcha } from 'react-simple-captcha';
 import { AuthContext } from '../Provider/AuthProvider';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
+import useAuth from '../hooks/useAuth';
 
 const LogIn = () => {
-    const{login} = useContext(AuthContext)
-    const captchaRef = useRef(null);
+    // const{login} = useContext(AuthContext)
+    
+    const{login} = useAuth()
     const [disable, setDisable] = useState(true);
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const from = location.state?.from?.pathname || '/' ;
 
     useEffect(()=>{
         loadCaptchaEnginge(6); 
@@ -23,26 +29,30 @@ const LogIn = () => {
         login(email, password)
         .then(result => {
             console.log(result.user);
+           navigate(from, {replace:true})
         })
         .catch(error => {
             console.log(error.message);
         })
         
     }
-    const validate = () => {
-        const captchaValidate = captchaRef.current.value;
+    const validate = (e) => {
+        const captchaValidate = e.target.value;
         console.log(captchaValidate);
-        if(validateCaptcha(captchaValidate)){
+         if(validateCaptcha(captchaValidate)){
            setDisable(false)
+        } else{
+          setDisable(true)
         }
+        
     }
   return (
     <div>
         <Helmet>
             <title>Misams Kitchen | Login</title>
         </Helmet>
-      <div className="hero min-h-screen bg-base-200">
-        <div className="hero-content flex-col lg:flex-row-reverse">
+      <div className="hero min-h-screen bg-base-200 ">
+        <div className="hero-content flex-col lg:flex-row-reverse mt-16">
           <div className="text-center lg:text-left md:w-1/2">
             <h1 className="text-5xl font-bold text-center">Login now!</h1>
             <p className="py-6 text-center">
@@ -87,17 +97,17 @@ const LogIn = () => {
                 <LoadCanvasTemplate />
                 </label>
                 <input
+                onBlur={validate}
                   type="text"
-                  ref={captchaRef}
                   name="captcha"
                   placeholder="Type Captcha"
                   className="input input-bordered"
                   required
                 />
-               <button onClick={validate} className='btn btn-outline btn-xm mt-2'>Validate</button>
+               {/* <button onClick={validate} className='btn btn-outline btn-xm mt-2'>Validate</button> */}
               </div>
               <div className="form-control mt-6">
-                <input disabled={disable}  className="btn bg-sky-400" type="submit" value="Login" />
+                <input disabled={disable}   className="btn bg-sky-400" type="submit" value="Login" />
               </div>
             </form>
             <p className='-mt-7 px-8 mb-4'><small>New here? <Link className='text-orange-500' to='/register'>Create an account</Link></small></p>

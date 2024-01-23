@@ -14,7 +14,7 @@ const SingleCard = ({ card }) => {
           <h2 className="text-2xl font-bold text-center">{name}</h2>
           <p className="h-10 overflow-hidden ">{recipe}</p>
           <div className="card-actions justify-center">
-            <button className="px-3 py-2 border-b-2 border-yellow-600 text-yellow-600 hover:bg-black hover:rounded duration-500">Order Now</button>
+            <button className="px-3 py-2 border-b-2 border-yellow-600 text-yellow-600 hover:bg-black hover:rounded duration-500">Add to Cart</button>
           </div>
         </div>
       </div>

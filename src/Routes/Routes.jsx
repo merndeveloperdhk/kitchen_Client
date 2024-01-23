@@ -5,6 +5,7 @@ import Menu from "../Components/Menu/Menu";
 import Order from "./Order/Order";
 import LogIn from "../Components/Login/LogIn";
 import Register from "../Components/Register/Register";
+import FormicRegister from "../Components/Register/FormicRegister";
 
 export const router = createBrowserRouter([
     {
@@ -30,6 +31,10 @@ export const router = createBrowserRouter([
         {
           path:'/register',
           element:<Register></Register>
+        },
+        {
+          path:'/formicRegister',
+          element:<FormicRegister></FormicRegister>
         }
       ]
     },

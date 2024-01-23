@@ -1,23 +1,43 @@
 import { NavLink } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 
 const Navabar = () => {
+  const { user, logOut } = useAuth();
+  const handleLogOut = () => {
+    logOut();
+  };
   const navBar = (
     <>
       <li>
-        <NavLink to='/'>Home</NavLink>
+        <NavLink to="/">Home</NavLink>
       </li>
       <li>
-        <NavLink to='/menu'>Our Menu</NavLink>
+        <NavLink to="/menu">Our Menu</NavLink>
       </li>
       <li>
-        <NavLink to='/order/pizza'>Order</NavLink>
+        <NavLink to="/order/pizza">Order</NavLink>
       </li>
-      <li>
-        <NavLink to='/login'>LogIn</NavLink>
-      </li>
-      <li>
-        <NavLink to='/register'>Register</NavLink>
-      </li>
+      {user ? (
+        <div className="md:flex items-center gap-2">
+          <button onClick={handleLogOut}>Logout</button>
+          <div className="md:flex items-center gap-2">
+            <img className="w-8" src={user.photoURL} alt="" />
+            <span>{user.displayName}</span>
+          </div>
+        </div>
+      ) : (
+        <>
+          <li>
+            <NavLink to="/login">LogIn</NavLink>
+          </li>
+          <li>
+            <NavLink to="/register">Register</NavLink>
+          </li>
+          <li>
+            <NavLink to="/formicRegister">Formic Register</NavLink>
+          </li>
+        </>
+      )}
     </>
   );
   return (

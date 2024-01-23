@@ -1,13 +1,14 @@
 
-import { useContext } from "react";
+
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import { AuthContext } from "../Provider/AuthProvider";
+import useAuth from "../hooks/useAuth";
 
 
 const Register = () => {
-  const{createUser} = useContext(AuthContext)
+  // const{createUser} = useContext(AuthContext)
+  const{createUser} = useAuth()
     const { register, handleSubmit, watch, formState: { errors },} = useForm();
     
         const onSubmit = (data) => {
@@ -21,8 +22,6 @@ const Register = () => {
             })
         };
    
-    
-
     return (
         <div>
         <Helmet>
