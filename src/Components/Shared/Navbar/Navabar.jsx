@@ -29,7 +29,7 @@ const Navabar = () => {
           </Link>
           <button onClick={handleLogOut}>Logout</button>
           <div className="md:flex items-center gap-2">
-            <img className="w-8" src={user.photoURL} alt="" />
+            <img className="w-8 h-8 rounded-full" src={user?.photoURL} alt="" />
             <span>{user.displayName}</span>
           </div>
         </div>
@@ -49,7 +49,7 @@ const Navabar = () => {
     </>
   );
   return (
-    <div>
+    <div className="">
       <div className="navbar fixed z-10 bg-opacity-25 bg-base-100 max-w-7xl ">
         <div className="navbar-start">
           <div className="dropdown">

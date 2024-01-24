@@ -14,6 +14,12 @@ import UserHome from "../Components/Dashboard/UserHome";
 import Reservation from "../Components/Dashboard/Reservation";
 import Review from "../Components/Dashboard/Review";
 import MyBooking from "../Components/Dashboard/MyBooking";
+import Contact from "../Components/Dashboard/Contact";
+import AdminHome from "../Components/Dashboard/AdminHome";
+import AddItems from "../Components/Dashboard/AddItems";
+import ManageItems from "../Components/Dashboard/ManageItems";
+import ManageBooking from "../Components/Dashboard/ManageBooking";
+import AllUsers from "../Components/Dashboard/AllUsers";
 
 export const router = createBrowserRouter([
     {
@@ -73,6 +79,31 @@ export const router = createBrowserRouter([
         {
           path:'/dashboard/myBooking',
           element:<MyBooking></MyBooking>
+        },
+        {
+          path:'/dashboard/contact',
+          element:<Contact></Contact>
+        }, 
+        //Admin routes
+        {
+          path:'/dashboard/adminHome',
+          element:<AdminHome></AdminHome>
+        },
+        {
+          path:'/dashboard/addItems',
+          element:<AddItems></AddItems>
+        },
+        {
+          path:'/dashboard/manageItems',
+          element:<ManageItems></ManageItems>
+        },
+        {
+          path:'/dashboard/manageBooking',
+          element:<ManageBooking></ManageBooking>
+        },
+        {
+          path:'/dashboard/allUsers',
+          element:<AllUsers></AllUsers>
         }
       ]
     }

@@ -2,31 +2,64 @@
 
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
+import SocialLogin from "../Login/SocialLogin";
+import Swal from "sweetalert2";
+import UseAxiosPublic from "../hooks/UseAxiosPublic";
+import { Link, useNavigate } from "react-router-dom";
 
 
 const Register = () => {
   // const{createUser} = useContext(AuthContext)
-  const{createUser} = useAuth()
-    const { register, handleSubmit, watch, formState: { errors },} = useForm();
+  const{createUser, updateUserProfile} = useAuth()
+    const { register, handleSubmit, reset, formState: { errors },} = useForm();
+    const axiosPublic = UseAxiosPublic();
+    const navigate = useNavigate();
     
         const onSubmit = (data) => {
             console.log(data)
             createUser(data.email, data.password)
             .then(result => {
               console.log(result.user);
+              updateUserProfile(data.name, data.photoUrl)
+              .then(() => {
+               // create user entry in the database
+              const userInfo = {
+                name: data.name,
+                email: data.email,
+                photoUrl: data.photoUrl
+              }
+              axiosPublic.post('/users', userInfo)
+              .then(res => {
+                if(res.data.insertedId){
+                  console.log("user added to the database");
+                  reset()
+                  Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Your work has been saved",
+                    showConfirmButton: false,
+                    timer: 1000
+                  });
+                  navigate('/')
+                }
+              });
+              
+              })
+              .catch((error) => {
+                console.log(error.message);
+              });
             })
-            .then(error => {
+            .catch(error => {
               console.log(error.message);
             })
         };
    
     return (
-        <div>
-        <Helmet>
-            <title>Misams Kitchen | Register</title>
-        </Helmet>
+      <div>
+      <Helmet>
+        <title>Misams Kitchen | Register</title>
+      </Helmet>
       <div className="hero min-h-screen bg-base-200 ">
         <div className="hero-content flex-col lg:flex-row-reverse">
           <div className="text-center lg:text-left md:w-1/2">
@@ -46,13 +79,32 @@ const Register = () => {
                 <input
                   type="text"
                   name="name"
-                  {...register("name", {required:true})}
+                  {...register("name", { required: true })}
                   placeholder="Your name"
                   className="input input-bordered"
                   required
                 />
-                {errors.name && <span className="text-red-600">Name is required</span>}
+                {errors.name && (
+                  <span className="text-red-600">Name is required</span>
+                )}
               </div>
+              <div>
+                  <label
+                    for="name"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    PhotoUrl
+                  </label>
+                  <input
+                    type="text"
+                    name="photoUrl"
+                    id="photoUrl"
+                    {...register("photoUrl")}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Photo URL"
+                    required=""
+                  />
+                </div>
               <div className="form-control">
                 <label className="label">
                   <span className="label-text">Email</span>
@@ -60,7 +112,7 @@ const Register = () => {
                 <input
                   type="email"
                   name="email"
-                  {...register("email" , {required:true})}
+                  {...register("email", { required: true })}
                   placeholder="email"
                   className="input input-bordered"
                   required
@@ -74,34 +126,56 @@ const Register = () => {
                 <input
                   type="password"
                   name="password"
-                  {...register("password", {required:true, minLength:6, maxLength:20, 
-                    pattern:/(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-])/,
-                     
-                })}
+                  {...register("password", {
+                    required: true,
+                    minLength: 6,
+                    maxLength: 20,
+                    pattern:
+                      /(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-])/,
+                  })}
                   placeholder="password"
                   className="input input-bordered"
                   required
                 />
-                {
-                    errors.password?.type === 'required' && <p className="text-red-600">Password is required</p>
-                }
-                {
-                    errors.password?.type === 'minLength' && <p className="text-red-600">Password must be at least 6 characters</p>
-                }
-                {
-                    errors.password?.type === 'maxLength' && <p className="text-red-600">Password not more than 20 characters</p>
-                }
-                {
-                    errors.password?.type === 'pattern' && <p className="text-red-600">One Upper case, one lower case , one special character and one number</p>
-                }
-              
+                {errors.password?.type === "required" && (
+                  <p className="text-red-600">Password is required</p>
+                )}
+                {errors.password?.type === "minLength" && (
+                  <p className="text-red-600">
+                    Password must be at least 6 characters
+                  </p>
+                )}
+                {errors.password?.type === "maxLength" && (
+                  <p className="text-red-600">
+                    Password not more than 20 characters
+                  </p>
+                )}
+                {errors.password?.type === "pattern" && (
+                  <p className="text-red-600">
+                    One Upper case, one lower case , one special character and
+                    one number
+                  </p>
+                )}
               </div>
-            
+
               <div className="form-control mt-6">
-                <input  className="btn bg-sky-400" type="submit" value="Register" />
+                <input
+                  className="btn bg-sky-400"
+                  type="submit"
+                  value="Register"
+                />
               </div>
             </form>
-            <p className='-mt-7 px-8 mb-4'><small>Already have an account? <Link className='text-orange-500' to='/login'>Please Login</Link></small></p>
+            <SocialLogin></SocialLogin>
+            <p className="text-sm font-light text-gray-500 dark:text-gray-400 text-center mb-6">
+                  Already have an account?{" "}
+                  <Link
+                    to='/login'
+                    className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                  >
+                    Login here
+                  </Link>
+                </p>
           </div>
         </div>
       </div>

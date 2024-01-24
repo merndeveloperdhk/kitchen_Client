@@ -12,12 +12,11 @@ import { useParams } from "react-router-dom";
 const Order = () => {
     const categories = ['pizza', 'salad', 'soup', 'dessert', 'drinks', 'offered']
     const{category} = useParams();
-    console.log(category);
+    // console.log(category);
     const initialIndex = categories.indexOf(category)
     const[tabIndex, setTabIndex] = useState(initialIndex)
     const [menus] = UseMenu();
     
-    console.log(category);
     // const {image,name, recipe } = card;
     const dessert = menus.filter(item => item.category === 'dessert');
     const salad = menus.filter(item => item.category === 'salad');

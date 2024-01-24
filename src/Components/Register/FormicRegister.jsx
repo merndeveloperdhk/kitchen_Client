@@ -1,36 +1,64 @@
 import { useForm } from "react-hook-form";
 import useAuth from "../hooks/useAuth";
+import {  Link, useNavigate } from "react-router-dom";
+import SocialLogin from "../Login/SocialLogin";
+import UseAxiosPublic from "../hooks/UseAxiosPublic";
+import Swal from "sweetalert2";
 
 const FormicRegister = () => {
-  const{createUser, updateUserProfile} = useAuth()
+  const { createUser, updateUserProfile } = useAuth();
+  const navigate = useNavigate();
+  const axiosPublic = UseAxiosPublic();
+
   const {
     register,
     handleSubmit,
     reset,
-    watch,
     formState: { errors },
   } = useForm();
 
   const onSubmit = (data) => {
     console.log(data);
     createUser(data.email, data.password)
-    .then(result => {
-      console.log(result.user);
-      updateUserProfile(data.name, data.photoUrl)
-      .then(() => {
-          console.log(("user profile info updated"));
-          reset();
-      }).catch((error)=> {
-          console.log(error.message);
+      .then((result) => {
+        console.log(result.user);
+        
+        updateUserProfile(data.name, data.photoUrl)
+          .then(() => {
+           // create user entry in the database
+          const userInfo = {
+            name: data.name,
+            email: data.email,
+            photoURL: data.photoUrl
+          }
+          axiosPublic.post('/users', userInfo)
+          .then(res => {
+            if(res.data.insertedId){
+              console.log("user added to the database");
+              reset()
+              Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Your work has been saved",
+                showConfirmButton: false,
+                timer: 1000
+              });
+              navigate('/')
+            }
+          });
+          
+          })
+          .catch((error) => {
+            console.log(error.message);
+          });
       })
-    })
-    .catch(error => {
-      console.log(error.message);
-    })
+      .catch((error) => {
+        console.log(error.message);
+      });
   };
 
   return (
-    <div>
+    <div className="">
       <section className="bg-gray-50 dark:bg-gray-900">
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto  lg:py-0">
           <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
@@ -45,7 +73,7 @@ const FormicRegister = () => {
               >
                 <div>
                   <label
-                    for="name"
+                    htmlFor="name"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
                     Your Name
@@ -57,13 +85,14 @@ const FormicRegister = () => {
                     {...register("name")}
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Name"
-                   
                   />
-                  {errors.name && <span>This field is required min 6 and max 15</span>}
+                  {errors.name && (
+                    <span>This field is required min 6 and max 15</span>
+                  )}
                 </div>
                 <div>
                   <label
-                    for="name"
+                    htmlFor="name"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
                     PhotoUrl
@@ -77,11 +106,10 @@ const FormicRegister = () => {
                     placeholder="Photo URL"
                     required=""
                   />
-                  
                 </div>
                 <div>
                   <label
-                    for="email"
+                    htmlFor="email"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
                     Your email
@@ -98,7 +126,7 @@ const FormicRegister = () => {
                 </div>
                 <div>
                   <label
-                    for="password"
+                    htmlFor="password"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
                     Password
@@ -107,19 +135,32 @@ const FormicRegister = () => {
                     type="password"
                     name="password"
                     id="password"
-                    {...register("password", {required: true, minLength:6, maxLength:12, pattern: /(?=.*[!@#$&*])/})}
+                    {...register("password", {
+                      required: true,
+                      minLength: 6,
+                      maxLength: 12,
+                      pattern: /(?=.*[!@#$&*])/,
+                    })}
                     placeholder="••••••••"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     required=""
                   />
-                  {errors.password?.type === "required" && <p>Password is required</p>}
-                  {errors.password?.type === "minLength" && <p>Password must 6 character</p>}
-                  {errors.password?.type === 'maxLength' && <p>Password less then 12</p>}
-                  {errors.password?.type === 'pattern' && <p>Password One special</p>}
+                  {errors.password?.type === "required" && (
+                    <p>Password is required</p>
+                  )}
+                  {errors.password?.type === "minLength" && (
+                    <p>Password must 6 character</p>
+                  )}
+                  {errors.password?.type === "maxLength" && (
+                    <p>Password less then 12</p>
+                  )}
+                  {errors.password?.type === "pattern" && (
+                    <p>Password One special</p>
+                  )}
                 </div>
                 <div>
                   <label
-                    for="confirm-password"
+                    htmlFor="confirm-password"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
                     Confirm password
@@ -135,19 +176,45 @@ const FormicRegister = () => {
                   />
                 </div>
                 {/*  */}
-                
-<div class="flex items-center justify-center w-full">
-    <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-24 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-        <div class="flex flex-col items-center justify-center pt-5 pb-6">
-            <svg class="w-8 h-8 mb-2 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
-            </svg>
-            <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-            <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
-        </div>
-        <input id="dropzone-file" name="fileUpload" {...register("fileUpload")} type="file" class="hidden" />
-    </label>
-</div> 
+
+                <div className="flex items-center justify-center w-full">
+                  <label
+                    htmlFor="dropzone-file"
+                    className="flex flex-col items-center justify-center w-full h-24 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+                  >
+                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                      <svg
+                        className="w-8 h-8 mb-2 text-gray-500 dark:text-gray-400"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 20 16"
+                      >
+                        <path
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                        />
+                      </svg>
+                      <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                        <span className="font-semibold">Click to upload</span> or
+                        drag and drop
+                      </p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        SVG, PNG, JPG or GIF (MAX. 800x400px)
+                      </p>
+                    </div>
+                    <input
+                      id="dropzone-file"
+                      name="fileUpload"
+                      {...register("fileUpload")}
+                      type="file"
+                      className="hidden"
+                    />
+                  </label>
+                </div>
 
                 {/*  */}
                 <div>
@@ -170,7 +237,7 @@ const FormicRegister = () => {
                   </div>
                   <div className="ml-3 text-sm">
                     <label
-                      for="terms"
+                      htmlFor="terms"
                       className="font-light text-gray-500 dark:text-gray-300"
                     >
                       I accept the{" "}
@@ -189,16 +256,19 @@ const FormicRegister = () => {
                 >
                   Create an account
                 </button>
-                <p className="text-sm font-light text-gray-500 dark:text-gray-400">
+              </form>
+              {/* Social Login */}
+              <SocialLogin></SocialLogin>
+              <p className="text-sm font-light text-gray-500 dark:text-gray-400 text-center">
                   Already have an account?{" "}
-                  <a
-                    href="#"
+                  <Link
+                    to='/login'
                     className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                   >
                     Login here
-                  </a>
+                  </Link>
                 </p>
-              </form>
+              {/*  */}
             </div>
           </div>
         </div>

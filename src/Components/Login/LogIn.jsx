@@ -4,6 +4,7 @@ import { loadCaptchaEnginge, LoadCanvasTemplate,validateCaptcha } from 'react-si
 import { AuthContext } from '../Provider/AuthProvider';
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
+import SocialLogin from './SocialLogin';
 
 const LogIn = () => {
     // const{login} = useContext(AuthContext)
@@ -112,6 +113,7 @@ const LogIn = () => {
               </div>
             </form>
             <p className='-mt-7 px-8 mb-4'><small>New here? <Link className='text-orange-500' to='/register'>Create an account</Link></small></p>
+            <SocialLogin></SocialLogin>
           </div>
         </div>
       </div>

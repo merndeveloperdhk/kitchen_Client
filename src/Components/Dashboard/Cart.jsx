@@ -50,7 +50,7 @@ Swal.fire({
       ></SectionTitle>
       <div className="flex justify-between w-2/3 bg-slate-100 mx-auto p-2">
         <h1 className="text-xl">Total Orders : {cart.length}</h1>
-        <h1 className="text-xl">Total Price : {totalPriceP}</h1>
+        <h1 className="text-xl">Total Price : $ {totalPriceP}</h1>
         <button className="btn btn-sm bg-green-400">Pay</button>
       </div>
       <div className="w-2/3 mx-auto ">
@@ -88,7 +88,7 @@ Swal.fire({
                       {item.name}
                       
                     </td>
-                    <td>{item.price}</td>
+                    <td>$ {item.price}</td>
                     <th>
                       <button onClick={()=> handleDelete(item._id)} className="btn btn-ghost btn-xs text-red-600"><FaTrashAlt></FaTrashAlt></button>
                     </th>
